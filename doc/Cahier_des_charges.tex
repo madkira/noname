@@ -1,7 +1,7 @@
 
-\title{Cahier des charges OCS}
+\title{Cahier des charges OCS\\ Cl\'e d'Or}
 \author{
-        Boban Loic\\
+        Loic BOBAN\\
         Raphaël KUMAR \\
         Benjamin PIAT\\
 }
@@ -15,6 +15,8 @@
 \begin{document}
 \maketitle
 \section{Scénario}
+Le projet Clé d'Or s'occupe de faire les taches d'un consierge d'hotel notamment de faire part de la météo pour inciter la prise d'un parapluie et d'un manteau, mais aussi d'avertir lors du retour dans le logement du passage d'un visiteur et des potentiels messages urgents qui serait survenue pendant l'absence du logement. Une sorte de Jarvis.
+
 \subsection{Scénario 1}
 
 Dans ce premier scénario bob est quelqu'un qui perd souvent ces clefs. Avec notre porte clef bob devras après avoir ouvert puis refermer la porte derrière lui, accrocher ces clefs au porte clef sinon il sera notifier n'ont pas étaient accrochées au porte clefs.
@@ -37,14 +39,21 @@ naturels physiques pouvant dégrader l’objet.
 \section{Milieu technique}
 Liste des Technologies embarquées:\\
 -Lecteur RFID\\
--Détécteur d'ouverture de porte\\
+-Haut parleur\\
 -écran LCD\\
+-Tag NFC\\
 
 \subsection{Mise en situation des éléments électroniques dans l’objet}
 
 Le lecteur RFID ce trouvera en dessous du crochet derrière la façade du boîtier. Le lecteur RFID permétera de détecter le Tag NFC incorporé aux clefs.  \\
 L'écran LCD sera au dessus des crocher incorporé au boîtier du raspberryPI, il servira à afficher des informations à l'utilisateur.\\
+Le haut parleur se trouvera en facade pour permettre de donner aux utilisateurs les détails via un syntétiseur vocal.
 
-\includegraphics[scale=0.130]{Chroquis.jpg} 
+
+\begin{figure}[!ht]
+    \center
+    \includegraphics[width=20cm]{dessin}
+    \caption{quelques valeurs clée}
+\end{figure}
 
 \end{document}
