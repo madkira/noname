@@ -1,12 +1,10 @@
 package main
 
-
  import(
 	"fmt"
 	"net/http"
 	//"container/list"
 
-	"github.com/gorilla/mux"
 
   "math/rand"
 	"golang.org/x/oauth2"
@@ -85,16 +83,4 @@ func initGmail(){
 	if err != nil {
 		log.Printf("Error: %v", err)
 	}
-}
-
-func main() {
-	r := mux.NewRouter()
-  r.HandleFunc("/",root)
-  r.HandleFunc("/mail",mail)
-	r.HandleFunc("/mail/{id}", mailid )
-  http.Handle("/",r)
-
-
-  http.ListenAndServe(":80", nil) // set listen port
-
 }
