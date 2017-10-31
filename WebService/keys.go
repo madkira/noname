@@ -6,6 +6,7 @@ import(
  "encoding/json"
  "strconv"
  "strings"
+ "github.com/gorilla/mux"
  )
 
  type person struct{
@@ -40,7 +41,14 @@ func getPresent(w http.ResponseWriter, r *http.Request) {
 func rmPresent(w http.ResponseWriter, r *http.Request) {
   r.ParseForm()
 
-  i, _ := strconv.Atoi(strings.Join(r.Form["id"],","))
+  var i int
+  if(r.Form["id"] != nil){
+
+    i, _ = strconv.Atoi(strings.Join(r.Form["id"],","))
+  }else{
+    vars := mux.Vars(r)
+    i,_ = strconv.Atoi(vars["id"])
+  }
   presents[i].present = false
   fmt.Fprintf(w,"200")
 
@@ -49,7 +57,14 @@ func rmPresent(w http.ResponseWriter, r *http.Request) {
 
 func addPresent(w http.ResponseWriter, r *http.Request) {
   r.ParseForm()
-  i, _ := strconv.Atoi(strings.Join(r.Form["id"],","))
+  var i int
+  if(r.Form["id"] != nil){
+
+    i, _ = strconv.Atoi(strings.Join(r.Form["id"],","))
+  }else{
+    vars := mux.Vars(r)
+    i,_ = strconv.Atoi(vars["id"])
+  }
 
   presents[i].present = true
 

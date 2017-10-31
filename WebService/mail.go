@@ -6,7 +6,6 @@ package main
 	//"container/list"
 
 
-  "math/rand"
 	"golang.org/x/oauth2"
  "golang.org/x/oauth2/google"
  "google.golang.org/api/gmail/v1"
@@ -37,14 +36,14 @@ func mail(w http.ResponseWriter, r *http.Request) {
 func mailid(w http.ResponseWriter, r *http.Request) {
   //vars := mux.Vars(r)
   //id := vars["id"]
-	rnd := rand.Int() % 15
 	//list := list.New()
 
-  label,err := gmailService.Users.Messages.List("me").Do()
-	fmt.Println("Nb unread mail", label)
+  label,err := gmailService.Users.Messages.List("me").Q("in:inbox is:unread").Do()
+	fmt.Println("Nb unread mail", label.ResultSizeEstimate)
+
   fmt.Println("error ", err)
 
-  fmt.Fprintf(w, "%d",rnd)
+  fmt.Fprintf(w, "%d",label.ResultSizeEstimate)
 }
 
 func initGmail(){
@@ -54,7 +53,7 @@ func initGmail(){
 		log.Printf("Error: %v", err)
 	}
 
-	conf, err := google.ConfigFromJSON(secret, gmail.GmailSendScope)
+	conf, err := google.ConfigFromJSON(secret, gmail.GmailModifyScope)
 	if err != nil {
 		log.Printf("Error: %v", err)
 	}

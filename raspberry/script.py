@@ -5,6 +5,7 @@ import grovepi
 from subprocess import call as system
 # import urllib.request
 import urllib
+import urllib2
 from os.path import isfile
 
 
@@ -12,7 +13,7 @@ if not isfile("/tmp/already_start") :
     system(["touch", "/tmp/already_start"])
     system(["pulseaudio", "--start"])
     time.sleep(10)
-user = "Raphael"
+user = "Jean-Yves"
 LED = 2 
 SW = 4
 numleds = 1 #If you only plug 1 LED, change 10 to 1
@@ -61,15 +62,24 @@ try:
         print(grovepi.digitalRead(SW))
         if grovepi.digitalRead(SW) :
             message =' '.join(["Bon retour parmi nous", user, "; vous"])
-            nbmessage = 3 #urllib.urlopen("http://192.168.1.190/mail/1").read()
+            url = 'http://192.168.1.190/whoishere/add'
+            data = urllib.urlencode({'id' : '1'})
+            req = urllib2.Request(url=url,data=data)
+            nbmessage = urllib2.urlopen(req).read()
             if nbmessage :
-                message=' '.join([message, "avez",str(nbmessage),"messages non lut"])
-            else : 
-                message=' '.join([message, "n'avez pas de nouveaux messages"])
-            system(["./dit.sh", message])
+                nbmessage = urllib.urlopen("http://192.168.1.190/mail/1").read()
+                if nbmessage :
+                    message=' '.join([message, "avez",str(nbmessage),"messages non lut"])
+                else : 
+                    message=' '.join([message, "n'avez pas de nouveaux messages"])
+                system(["./dit.sh", message])
             while grovepi.digitalRead(SW) :
                 time.sleep(1)
             message="Bonne journee"+user
+            url ='http://192.168.1.190/whoishere/rm'
+            data = urllib.urlencode({'id' : '1'})
+            req = urllib2.Request(url=url,data=data)
+            urllib2.urlopen(req).read()
             system(["./dit.sh", message])
 
         time.sleep(1)
