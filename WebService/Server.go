@@ -11,7 +11,7 @@ import(
 
 
 func main() {
-
+  initGmail();
   initPersons();
 	r := mux.NewRouter()
   r.HandleFunc("/",root)

@@ -39,7 +39,10 @@ func mailid(w http.ResponseWriter, r *http.Request) {
   //id := vars["id"]
 	rnd := rand.Int() % 15
 	//list := list.New()
-	fmt.Println("Nb unread mail", rnd)
+
+  label,err := gmailService.Users.Messages.List("me").Do()
+	fmt.Println("Nb unread mail", label)
+  fmt.Println("error ", err)
 
   fmt.Fprintf(w, "%d",rnd)
 }
@@ -78,8 +81,8 @@ func initGmail(){
 	client := conf.Client(oauth2.NoContext, tok)
 
 	// Create a new gmail service using the client
-	gmailService, err := gmail.New(client)
-	_ = gmailService
+	g, err := gmail.New(client)
+	 gmailService = *g
 	if err != nil {
 		log.Printf("Error: %v", err)
 	}
