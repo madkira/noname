@@ -19,7 +19,9 @@ func main() {
 	r.HandleFunc("/mail/{id}", mailid )
   r.HandleFunc("/whoishere",getPresent)
   r.HandleFunc("/whoishere/add",addPresent)
+  r.HandleFunc("/whoishere/add/{id}",addPresent)
   r.HandleFunc("/whoishere/rm",rmPresent)
+  r.HandleFunc("/whoishere/rm/{id}",rmPresent)
   http.Handle("/",r)
 
 
