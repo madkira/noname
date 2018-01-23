@@ -22,6 +22,7 @@ func main() {
   r.HandleFunc("/whoishere/add/{id}",addPresent)
   r.HandleFunc("/whoishere/rm",rmPresent)
   r.HandleFunc("/whoishere/rm/{id}",rmPresent)
+  r.HandleFunc("/monitor/{id}",getMQTTnode)
   http.Handle("/",r)
 
 
