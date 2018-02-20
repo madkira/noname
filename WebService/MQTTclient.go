@@ -1,35 +1,38 @@
+package main
 import(
  "fmt"
  "net/http"
  "flag"
- "fmt"
  "os"
- "os/exec"
- "log"
 
  MQTT "github.com/eclipse/paho.mqtt.golang"
 
 )
 
+var cleedor = ""
+
+var choke = make(chan [2]string)
+
+
+
 
 func getMQTTnode(w http.ResponseWriter, r *http.Request){
-
+  fmt.Fprintf(w,"%s",cleedor)
 }
 
-func MQTTRequest(id String){
+func initMQTT(top string){
 
-  topic := id
-	broker := flag.String("broker", "tcp://localhost:1883", "The broker URI. ex: tcp://10.10.1.1:1883")
+  topic := flag.String("topic", top, "The password (optional)")
+	broker := flag.String("broker", "tcp://192.168.43.123:1883", "The password (optional)")
 	password := flag.String("password", "", "The password (optional)")
 	user := flag.String("user", "", "The User (optional)")
 	id := flag.String("id", "testgoid", "The ClientID (optional)")
 	cleansess := flag.Bool("clean", false, "Set Clean Session (default false)")
 	qos := flag.Int("qos", 0, "The Quality of Service 0,1,2 (default 0)")
-	num := flag.Int("num", 1, "The number of messages to publish or subscribe (default 1)")
-	payload := flag.String("message", "", "The message text to publish (default empty)")
-	action := flag.String("action", "", "Action publish or subscribe (required)")
 	store := flag.String("store", ":memory:", "The Store Directory (default use memory store)")
 	flag.Parse()
+
+  fmt.Println(*topic)
 
 
 
@@ -52,8 +55,7 @@ func MQTTRequest(id String){
 
 
 
-	receiveCount := 0
-	choke := make(chan [2]string)
+
 
 	opts.SetDefaultPublishHandler(func(client MQTT.Client, msg MQTT.Message) {
 		choke <- [2]string{msg.Topic(), string(msg.Payload())}
@@ -70,20 +72,26 @@ func MQTTRequest(id String){
 	}
 
 
-		incoming := <-choke
+
+
+
+  go listen()
+
+
+
+
+	//client.Disconnect(250)
+	//fmt.Println("Sample Subscriber Disconnected")
+
+
+}
+
+func listen(){
+
+
+  for {
+    incoming := <-choke
 		fmt.Printf("RECEIVED TOPIC: %s MESSAGE: %s\n", incoming[0], incoming[1])
-		//receiveCount++
-
-		err := c.Run()
-
-		if err != nil {
-			log.Fatal(err)
-		}
-
-
-
-	client.Disconnect(250)
-	fmt.Println("Sample Subscriber Disconnected")
-
-
+    cleedor = incoming[1]
+  }
 }

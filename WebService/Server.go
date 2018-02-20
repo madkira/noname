@@ -5,14 +5,19 @@ import(
  //"container/list"
 
  "github.com/gorilla/mux"
+ upnp "upnpProtocol"
+
 
 
 )
 
 
 func main() {
+
+  upnp.ConnectUDP();
   initGmail();
   initPersons();
+  initMQTT("cleedor");
 	r := mux.NewRouter()
   r.HandleFunc("/",root)
   r.HandleFunc("/mail",mail)
