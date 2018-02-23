@@ -23,11 +23,12 @@ import(
    presents[3] = person{name: "Jean-Yves Tigli", present: false}
  }
 
-func getPresent(w http.ResponseWriter, r *http.Request) {
+func GetPresent(w http.ResponseWriter, r *http.Request) {
   var res []string
-  for i := 0; i < 4; i++ {
-    if(presents[i].present){
-      res = append(res,presents[i].name)
+  
+  for i := range users {
+    if(users[i].present){
+      res = append(res,users[i].name)
       fmt.Println("%s\n",res)
     }
   }
