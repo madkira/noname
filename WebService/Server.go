@@ -41,7 +41,7 @@ type weather struct{
 
 var users []userN
 
-func currW(){
+func currW() (*owm.CurrentWeatherData){
   /*w, err := owm.NewCurrent("C", "fr","8ba7a41e3811571c54b7e97138f05d46")
 	if err != nil {
 		log.Fatalln(err)
@@ -58,6 +58,8 @@ func currW(){
 	fmt.Println(body)
   fmt.Println(t)*/
 
+  fmt.Println("Weather")
+
   w, err := owm.NewCurrent("C", "FR", "8ba7a41e3811571c54b7e97138f05d46") // (internal - OpenWeatherMap reference for kelvin) with English output
     if err != nil {
         log.Fatalln(err)
@@ -65,6 +67,7 @@ func currW(){
 
     w.CurrentByName("Antibes")
     fmt.Println(w)
+    return w
 }
 
 func save(w http.ResponseWriter, r *http.Request) {
@@ -118,23 +121,23 @@ func main() {
     name: "Jean-Yves",
   },userN{
     present: false,
-    name: "Stéphane",
+    name: "Stephane",
   },
 }
 
   //upnp.ConnectUDP();
   //initGmail();
   //initPersons();
-  initMQTT("127.0.0.1:1883");
+  initMQTT("192.168.43.210:1883");
   //topic := flag.String("topic", "goldenkey/EntryUser", "The password (optional)")
-  if token := client.Subscribe("goldenkey/EntryUser", byte(*qos), nil); token.Wait() && token.Error() != nil {
+  if token := client.Subscribe("goldenkey/entry", byte(*qos), nil); token.Wait() && token.Error() != nil {
     //log.Fatalf(string(token.Error()))
     log.Println("explosion suscribe")
     return
     }
     //topic2 := flag.String("topic", "goldenkey/ExitUser", "The password (optional)")
 
-    if token := client.Subscribe("goldenkey/ExitUser", byte(*qos), nil); token.Wait() && token.Error() != nil {
+    if token := client.Subscribe("goldenkey/exit", byte(*qos), nil); token.Wait() && token.Error() != nil {
       //log.Fatalf(string(token.Error()))
       log.Println("explosion suscribe")
       return

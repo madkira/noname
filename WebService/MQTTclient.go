@@ -3,6 +3,7 @@ import(
  "fmt"
  "net/http"
  "flag"
+ "strconv"
  //"os"
 
  MQTT "github.com/eclipse/paho.mqtt.golang"
@@ -97,32 +98,43 @@ func setEnter(name string){
       users[i].present = true
       fmt.Println(users[i].present)
       for a := range users[i].services{
-        fmt.Println("publish")
+        fmt.Println("publish " + users[i].services[a])
 
         if users[i].services[a] == "Mail" {
-          if token := client.Publish("goldenkey/mail", 0, false, "mymessage"); token.Wait() && token.Error() != nil {
+          fmt.Println(strconv.Itoa(test()))
+
+          if token := client.Publish("goldenkey/msg", 0, false, "Vous avez " + strconv.Itoa(test()) + " nouveaux messages"); token.Wait() && token.Error() != nil {
             fmt.Println("err")
-        }else if users[i].services[a] == "Meteo" {
+        }/*else if users[i].services[a] == "Meteo" {
           fmt.Println("publish")
-          if token := client.Publish("goldenkey/meteo", 0, false, "mymessage"); token.Wait() && token.Error() != nil {
+          if token := client.Publish("goldenkey/msg", 0, false, currW()); token.Wait() && token.Error() != nil {
             fmt.Println("err")
-        }
+        }*/
         }
       }
     }
 
     }
   }
-}
+
 
 func setExit(name string){
   for i := range users {
     if users[i].name == name{
       users[i].present = false
       fmt.Println(users[i].present)
+      for a := range users[i].services{
+        if users[i].services[a] == "Meteo" {
+          fmt.Println("publish")
+          if token := client.Publish("goldenkey/msg", 0, false, "Blizzard de neige, attention a la route"); token.Wait() && token.Error() != nil {
+            fmt.Println("err")
+          }
+        }
+
 
     }
   }
+}
 }
 
 func listen(){
@@ -132,10 +144,10 @@ func listen(){
     incoming := <-choke
 		fmt.Printf("RECEIVED TOPIC: %s MESSAGE: %s\n", incoming[0], incoming[1])
     cleedor = incoming[1]
-    if incoming[0] == "goldenkey/ExitUser"{
+    if incoming[0] == "goldenkey/exit"{
       setExit(incoming[1])
 
-    }else if incoming[0] == "goldenkey/EntryUser"{
+    }else if incoming[0] == "goldenkey/entry"{
       setEnter(incoming[1])
     }
   }

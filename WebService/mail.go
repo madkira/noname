@@ -89,7 +89,7 @@ func saveToken(file string, token *oauth2.Token) {
   json.NewEncoder(f).Encode(token)
 }
 
-func test() (int64){
+func test() (int){
   ctx := context.Background()
 
   b, err := ioutil.ReadFile("client_secret.json")
@@ -119,6 +119,6 @@ func test() (int64){
     log.Fatalf("Unable to retrieve labels. %v", err)
   }
   //fmt.Println(r)
-  return r.ResultSizeEstimate
+  return int(r.ResultSizeEstimate)
 
 }
