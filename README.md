@@ -21,3 +21,4 @@ pour executer lancer les deux scripts python :
 ```
 python3 script.py & python3 script_read.py &
 ```
+La detection des clefs est faite par NFC avec un lecteur et un tag acroché aux clefs, pour la demo des tags NFC Type 4 sont utilisés, le type 4 est couramment utilisé pour des applications du type Smart Card, l'avantage du type 4 est qu'il supporte l'anticolision et permet donc de détecter plusieurs tags dans le champ d'un lecteur, dans notre cas ce serais la possibilité de detecter plusieur clefs de différentes persone. Le faite d'utiliser ce type de tag nous permet aussi de faire evoluer la platforme en stockent des informations utilisateur dans les tags des clefs.
